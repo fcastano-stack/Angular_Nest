@@ -11,7 +11,7 @@ async function createApp(): Promise<INestApplication> {
   if (!app) {
     app = await NestFactory.create(AppModule);
     app.enableCors({
-      origin: ['http://localhost:4200', 'https://escuelas-app.vercel.app', 'https://angular-nest-amber.vercel.app'],
+      origin: ['http://localhost:4200', 'https://escuelas-app.vercel.app', 'https://angular-nest-amber.vercel.app', 'https://angular-app-2026.web.app', 'https://angular-app-2026.firebaseapp.com'],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
       allowedHeaders: ['Content-Type'],
     });
