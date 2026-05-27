@@ -2,5 +2,5 @@
 // Aquí Angular apunta al backend que corre localmente.
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000',
+  apiUrl: 'https://angular-nest-api.vercel.app/escuelas',
 };
