@@ -1,15 +1,21 @@
+// ─── MAIN.TS (Punto de entrada) ──────────────────────────────
+// Es el primer archivo que se ejecuta.
+// Crea la app NestJS y la deja lista para recibir peticiones.
+// ─────────────────────────────────────────────────────────────
 import 'reflect-metadata';
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config(); // carga las variables del archivo .env
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { INestApplication } from '@nestjs/common';
 
+// Variable que guarda la app creada (evita crearla de nuevo en cada petición)
 let app: INestApplication;
 
 async function createApp(): Promise<INestApplication> {
   if (!app) {
     app = await NestFactory.create(AppModule);
+    // CORS: permite que el frontend pueda hacer peticiones al backend
     app.enableCors({
       origin: ['http://localhost:4200', 'https://angular-nest-two.vercel.app'],
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
@@ -21,12 +27,14 @@ async function createApp(): Promise<INestApplication> {
 }
 
 // Handler exportado para Vercel (serverless)
+// Vercel llama a esta función por cada petición HTTP
 export default async function handler(req: any, res: any) {
   const nestApp = await createApp();
   nestApp.getHttpAdapter().getInstance()(req, res);
 }
 
 // Inicio local (npm run start:dev / start:prod)
+// Solo se ejecuta cuando corremos el archivo directamente con Node
 if (require.main === module) {
   createApp().then(async (nestApp) => {
     const port = process.env.PORT ?? 3000;

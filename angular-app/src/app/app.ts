@@ -1,3 +1,8 @@
+// ─── APP COMPONENT ─────────────────────────────────────────
+// El componente principal de la app Angular.
+// Contiene la lógica de la pantalla: cargar, agregar, editar y borrar.
+// Se comunica con el backend a través del EscuelaService.
+// ─────────────────────────────────────────────────────────────
 import { Component, ViewEncapsulation, signal, inject, OnDestroy } from '@angular/core';
 import { EscuelaService, Escuela } from './escuela.service';
 

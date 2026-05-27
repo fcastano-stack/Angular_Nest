@@ -1,21 +1,17 @@
-// Importaciones necesarias para la configuración de la aplicación Angular
+// ─── APP CONFIG ───────────────────────────────────────────────
+// Configuración principal de la app Angular.
+// Aquí se registran los servicios globales disponibles en toda la app.
+// ─────────────────────────────────────────────────────────────
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
-// import { provideRouter } from '@angular/router';
 
-// Importa las rutas definidas para la aplicación
-// import { routes } from './app.routes';
-
-// Configuración principal de la aplicación Angular
 export const appConfig: ApplicationConfig = {
   providers: [
-    // Proporciona manejo global de errores en el navegador
+    // Manejo global de errores del navegador
     provideBrowserGlobalErrorListeners(),
-    // Configura la detección de cambios de Zone.js con coalescencia de eventos para mejor rendimiento
+    // Optimización de detección de cambios
     provideZoneChangeDetection({ eventCoalescing: true }),
-    // Cliente HTTP para llamadas a la API REST
+    // Habilita HttpClient en toda la app (necesario para hacer peticiones HTTP)
     provideHttpClient(),
-    // Configura el enrutador con las rutas definidas
-    // provideRouter(routes)
   ]
 };
