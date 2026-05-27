@@ -1,0 +1,177 @@
+<!-- Archivo de plantilla principal.
+     Aquí está la UI que ve el usuario, con formulario y tabla de escuelas. -->
+<!-- ──────────────────────────────────────────────────
+     HEADER
+────────────────────────────────────────────────── -->
+<header class="app-header animate-fade">
+  <div class="container">
+    <div class="header-icon">
+      <i class="fas fa-graduation-cap"></i>
+    </div>
+    <div class="header-meta">
+      <h1>{{ title() }}</h1>
+      <p><i class="fas fa-university"></i> Universidad Tecnológica Nacional — Gestión Académica 2026</p>
+    </div>
+    <button class="btn-refresh" (click)="loadItems()">
+      <i class="fas fa-sync-alt"></i> Actualizar
+    </button>
+  </div>
+</header>
+
+@if (notification()) {
+  <div class="notification-banner animate-fade" role="status" aria-live="polite">
+    <i class="fas fa-check-circle"></i>
+    {{ notification() }}
+  </div>
+}
+
+<!-- ──────────────────────────────────────────────────
+     MAIN
+────────────────────────────────────────────────── -->
+<main>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xl-10">
+
+        <!-- CARD: Registrar escuela -->
+        <div class="flat-card animate-fade">
+          <div class="flat-card-header">
+            <i class="fas fa-plus-circle"></i>
+            <div>
+              <h5>Registrar Nueva Escuela</h5>
+              <small>Complete el formulario para agregar una institución educativa</small>
+            </div>
+          </div>
+          <div class="flat-card-body">
+            <form (submit)="$event.preventDefault(); addItem()">
+              <div class="row-form">
+                <div class="field">
+                  <label class="field-label" for="nombreEscuela">
+                    <i class="fas fa-school"></i> Nombre de la escuela
+                  </label>
+                  <input
+                    id="nombreEscuela"
+                    class="flat-input"
+                    placeholder="Ej: Escuela de Ingeniería en Sistemas"
+                    [value]="newName()"
+                    (input)="newName.set($any($event.target).value)"
+                    required
+                  />
+                </div>
+                <div class="actions">
+                  <button
+                    type="submit"
+                    class="btn-flat btn-green"
+                    [disabled]="!newName().trim()"
+                  >
+                    <i class="fas fa-save"></i> Registrar
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-ghost"
+                    (click)="newName.set(''); loadItems()"
+                  >
+                    <i class="fas fa-times"></i> Limpiar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- CARD: Lista de escuelas -->
+        <div class="flat-card animate-fade">
+          <div class="flat-card-header" style="justify-content: space-between;">
+            <div style="display:flex; align-items:center; gap:0.6rem;">
+              <i class="fas fa-list-alt"></i>
+              <div>
+                <h5>Listado de Escuelas UTN</h5>
+                <small>Gestión y administración de instituciones educativas</small>
+              </div>
+            </div>
+            <span class="chip">
+              <i class="fas fa-graduation-cap"></i>
+              {{ items().length }} Escuelas
+            </span>
+          </div>
+
+          <!-- Cargando -->
+          @if (loading()) {
+            <div class="loading-state">
+              <div class="spinner-ring"></div>
+              Sincronizando datos...
+            </div>
+          }
+
+          <!-- Sin datos -->
+          @if (!loading() && items().length === 0) {
+            <div class="empty-state">
+              <i class="fas fa-school"></i>
+              <h6>No hay escuelas registradas</h6>
+              <p>Agregue la primera escuela usando el formulario superior.</p>
+            </div>
+          }
+
+          <!-- Tabla -->
+          @if (!loading() && items().length > 0) {
+            <div style="overflow-x: auto;">
+              <table class="flat-table" role="table" aria-label="Tabla de escuelas">
+                <thead>
+                  <tr>
+                    <th style="width:80px">ID</th>
+                    <th>Nombre de la Escuela</th>
+                    <th style="width:100px; text-align:center">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (item of items(); track item._id) {
+                    <tr>
+                      <td><span class="chip-id">{{ item._id.slice(0,6) }}…</span></td>
+                      <td>
+                        <input
+                          class="row-input"
+                          [value]="item.name"
+                          (blur)="updateItem(item._id, $any($event.target).value)"
+                          placeholder="Nombre de la escuela"
+                        />
+                      </td>
+                      <td style="text-align:center;">
+                        <div style="display:flex; gap:0.4rem; justify-content:center;">
+                          <button class="btn-icon btn-icon-red" (click)="deleteItem(item._id)" title="Eliminar">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ──────────────────────────────────────────────────
+     FOOTER
+────────────────────────────────────────────────── -->
+<footer class="app-footer">
+  <div class="container">
+    <div class="footer-brand">
+      <div class="footer-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <div>
+        <h6>Universidad Tecnológica Nacional</h6>
+        <small>Sistema de Gestión de Escuelas</small>
+      </div>
+    </div>
+    <div class="footer-copy">
+      <span><i class="fas fa-code"></i> Angular + Supabase</span> © 2026
+    </div>
+  </div>
+</footer>
+

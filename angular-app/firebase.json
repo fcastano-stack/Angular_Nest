@@ -1,0 +1,8 @@
+{
+  "hosting": {
+    "site": "angular-app-2026",
+    "public": "dist/angular-app/browser",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [{ "source": "**", "destination": "/index.html" }]
+  }
+}
