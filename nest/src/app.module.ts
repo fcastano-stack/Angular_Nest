@@ -11,8 +11,7 @@ import { EscuelaModule } from './escuela/escuela.module';
     // Conecta la app a MongoDB usando la URI del archivo .env
     // Si no existe la variable de entorno, usa la URI de respaldo
     MongooseModule.forRoot(
-      process.env.MONGODB_URI ??
-        'mongodb+srv://fcastano_db_user:aPK3OU3yeEUVnRr0@listaalumnos.wgdmvhu.mongodb.net/escuelas?appName=listaAlumnos',
+      process.env.MONGODB_URI ?? '',
     ),
     // Registra el módulo de escuelas para que sus rutas estén disponibles
     EscuelaModule,
