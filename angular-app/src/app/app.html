@@ -1,8 +1,6 @@
-<!-- Archivo de plantilla principal.
-     Aquí está la UI que ve el usuario, con formulario y tabla de escuelas. -->
-<!-- ──────────────────────────────────────────────────
-     HEADER
-────────────────────────────────────────────────── -->
+<!-- Plantilla principal: formulario de registro y tabla de escuelas -->
+
+<!-- ── HEADER ─────────────────────────────────────── -->
 <header class="app-header animate-fade">
   <div class="container">
     <div class="header-icon">
@@ -25,9 +23,7 @@
   </div>
 }
 
-<!-- ──────────────────────────────────────────────────
-     MAIN
-────────────────────────────────────────────────── -->
+<!-- ── MAIN ───────────────────────────────────────── -->
 <main>
   <div class="container">
     <div class="row justify-content-center">
@@ -45,6 +41,8 @@
           <div class="flat-card-body">
             <form (submit)="$event.preventDefault(); addItem()">
               <div class="row-form">
+
+                <!-- Nombre -->
                 <div class="field">
                   <label class="field-label" for="nombreEscuela">
                     <i class="fas fa-school"></i> Nombre de la escuela
@@ -58,22 +56,36 @@
                     required
                   />
                 </div>
+
+                <!-- Imagen (opcional) -->
+                <div class="field">
+                  <label class="field-label">
+                    <i class="fas fa-image"></i> Imagen (opcional)
+                  </label>
+                  <label class="file-label" [class.file-selected]="selectedFile">
+                    <input type="file" accept="image/*" (change)="onFileSelected($event)" style="display:none">
+                    <i class="fas fa-upload"></i>
+                    {{ selectedFile ? selectedFile.name : 'Elegir imagen...' }}
+                  </label>
+                  @if (imagePreview()) {
+                    <img [src]="imagePreview()!" class="img-preview" alt="vista previa">
+                  }
+                </div>
+
+                <!-- Botones -->
                 <div class="actions">
                   <button
                     type="submit"
                     class="btn-flat btn-green"
-                    [disabled]="!newName().trim()"
+                    [disabled]="!newName().trim() || saving()"
                   >
-                    <i class="fas fa-save"></i> Registrar
+                    <i class="fas fa-save"></i> {{ saving() ? 'Guardando...' : 'Registrar' }}
                   </button>
-                  <button
-                    type="button"
-                    class="btn-ghost"
-                    (click)="newName.set(''); loadItems()"
-                  >
+                  <button type="button" class="btn-ghost" (click)="clearForm(); loadItems()">
                     <i class="fas fa-times"></i> Limpiar
                   </button>
                 </div>
+
               </div>
             </form>
           </div>
@@ -119,6 +131,7 @@
                 <thead>
                   <tr>
                     <th style="width:80px">ID</th>
+                    <th style="width:70px; text-align:center">Imagen</th>
                     <th>Nombre de la Escuela</th>
                     <th style="width:100px; text-align:center">Acciones</th>
                   </tr>
@@ -127,6 +140,13 @@
                   @for (item of items(); track item._id) {
                     <tr>
                       <td><span class="chip-id">{{ item._id.slice(0,6) }}…</span></td>
+                      <td style="text-align:center;">
+                        @if (item.imageUrl) {
+                          <img [src]="item.imageUrl" class="thumb" [alt]="item.name">
+                        } @else {
+                          <span class="thumb-empty"><i class="fas fa-image"></i></span>
+                        }
+                      </td>
                       <td>
                         <input
                           class="row-input"
@@ -136,11 +156,9 @@
                         />
                       </td>
                       <td style="text-align:center;">
-                        <div style="display:flex; gap:0.4rem; justify-content:center;">
-                          <button class="btn-icon btn-icon-red" (click)="deleteItem(item._id)" title="Eliminar">
-                            <i class="fas fa-trash-alt"></i>
-                          </button>
-                        </div>
+                        <button class="btn-icon btn-icon-red" (click)="deleteItem(item._id)" title="Eliminar">
+                          <i class="fas fa-trash-alt"></i>
+                        </button>
                       </td>
                     </tr>
                   }
@@ -155,9 +173,7 @@
   </div>
 </main>
 
-<!-- ──────────────────────────────────────────────────
-     FOOTER
-────────────────────────────────────────────────── -->
+<!-- ── FOOTER ─────────────────────────────────────── -->
 <footer class="app-footer">
   <div class="container">
     <div class="footer-brand">
@@ -170,8 +186,7 @@
       </div>
     </div>
     <div class="footer-copy">
-      <span><i class="fas fa-code"></i> Angular + Supabase</span> © 2026
+      <span><i class="fas fa-code"></i> Angular + NestJS + Cloudinary</span> © 2026
     </div>
   </div>
 </footer>
-

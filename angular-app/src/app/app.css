@@ -343,6 +343,59 @@ main {
   .app-footer .container { flex-direction: column; text-align: center; }
 }
 
+/* ── FILE INPUT ──────────────────────────────────── */
+.file-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--s2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 0.9rem;
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.file-label:hover        { border-color: var(--blue); color: var(--text); }
+.file-label.file-selected { border-color: var(--green); color: var(--text); }
+
+.img-preview {
+  margin-top: 0.5rem;
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  display: block;
+}
+
+/* ── THUMBNAIL (tabla) ───────────────────────────── */
+.thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  display: block;
+  margin: 0 auto;
+}
+.thumb-empty {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--s3);
+  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
 .notification-banner {
   background: rgb(90, 0, 0);
   color: #a7f3d0;
