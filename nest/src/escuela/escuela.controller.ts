@@ -12,7 +12,11 @@ import {
   Body,
   HttpCode,
   HttpStatus,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 import { EscuelaService } from './escuela.service';
 import { CreateEscuelaDto, UpdateEscuelaDto } from './escuela.dto';
 
@@ -51,5 +55,15 @@ export class EscuelaController {
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id') id: string) {
     return this.escuelaService.remove(id);
+  }
+
+  // POST /escuelas/:id/imagen — sube una imagen a Cloudinary y guarda la URL
+  @Post(':id/imagen')
+  @UseInterceptors(FileInterceptor('image', { storage: memoryStorage() }))
+  uploadImage(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.escuelaService.uploadImage(id, file);
   }
 }

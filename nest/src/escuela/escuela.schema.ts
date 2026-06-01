@@ -16,6 +16,9 @@ export class Escuela {
   // required: no puede estar vacío | trim: elimina espacios al inicio/fin
   @Prop({ required: true, trim: true })
   name: string;
+
+  @Prop({ default: null })
+  imageUrl: string | null;
 }
 
 // Convierte la clase en un esquema usable por Mongoose

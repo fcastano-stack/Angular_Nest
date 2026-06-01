@@ -7,13 +7,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { EscuelaController } from './escuela.controller';
 import { EscuelaService } from './escuela.service';
 import { Escuela, EscuelaSchema } from './escuela.schema';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
   imports: [
-    // Registra el modelo de Mongoose para poder usarlo con @InjectModel
     MongooseModule.forFeature([{ name: Escuela.name, schema: EscuelaSchema }]),
+    CloudinaryModule,
   ],
-  controllers: [EscuelaController], // maneja las rutas HTTP
-  providers: [EscuelaService],      // contiene la lógica de negocio
+  controllers: [EscuelaController],
+  providers: [EscuelaService],
 })
 export class EscuelaModule {}

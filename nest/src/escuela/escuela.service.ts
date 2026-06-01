@@ -7,14 +7,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Escuela, EscuelaDocument } from './escuela.schema';
 import { CreateEscuelaDto, UpdateEscuelaDto } from './escuela.dto';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 // @Injectable permite que NestJS inyecte este servicio donde se necesite
 @Injectable()
 export class EscuelaService {
   constructor(
-    // Inyecta el modelo de Mongoose para poder consultar la BD
     @InjectModel(Escuela.name)
     private readonly escuelaModel: Model<EscuelaDocument>,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   // GET /escuelas — devuelve todas las escuelas ordenadas por fecha de creación
@@ -49,5 +50,11 @@ export class EscuelaService {
   async remove(id: string): Promise<void> {
     const result = await this.escuelaModel.findByIdAndDelete(id).exec();
     if (!result) throw new NotFoundException(`Escuela ${id} no encontrada`);
+  }
+
+  // POST /escuelas/:id/imagen — sube la imagen a Cloudinary y actualiza la URL en la BD
+  async uploadImage(id: string, file: Express.Multer.File): Promise<EscuelaDocument> {
+    const { secure_url } = await this.cloudinaryService.uploadImage(file);
+    return this.update(id, { imageUrl: secure_url });
   }
 }

@@ -13,4 +13,5 @@ export class CreateEscuelaDto {
 // El signo ? significa que el campo es opcional
 export class UpdateEscuelaDto {
   name?: string;
+  imageUrl?: string | null;
 }
