@@ -23,6 +23,9 @@ export class App implements OnDestroy {
   selectedFile: File | null = null;
   imagePreview = signal<string | null>(null);
 
+  // Modal para ver imagen en grande
+  modalImageUrl = signal<string | null>(null);
+
   private notificationTimeout: number | null = null;
 
   constructor() {
@@ -102,6 +105,14 @@ export class App implements OnDestroy {
       },
       error: (err) => console.error('Error al actualizar', err),
     });
+  }
+
+  openImageModal(imageUrl: string | undefined): void {
+    if (imageUrl) this.modalImageUrl.set(imageUrl);
+  }
+
+  closeImageModal(): void {
+    this.modalImageUrl.set(null);
   }
 
   showNotification(message: string, type: 'success' | 'error' | 'info' = 'success'): void {

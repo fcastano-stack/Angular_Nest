@@ -133,7 +133,6 @@
                     <th style="width:80px">ID</th>
                     <th style="width:70px; text-align:center">Imagen</th>
                     <th>Nombre de la Escuela</th>
-                    <th style="width:100px; text-align:center">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -142,7 +141,13 @@
                       <td><span class="chip-id">{{ item._id.slice(0,6) }}…</span></td>
                       <td style="text-align:center;">
                         @if (item.imageUrl) {
-                          <img [src]="item.imageUrl" class="thumb" [alt]="item.name">
+                          <img
+                            [src]="item.imageUrl"
+                            class="thumb thumb-clickable"
+                            [alt]="item.name"
+                            (click)="openImageModal(item.imageUrl)"
+                            title="Click para ampliar"
+                          >
                         } @else {
                           <span class="thumb-empty"><i class="fas fa-image"></i></span>
                         }
@@ -154,11 +159,6 @@
                           (blur)="updateItem(item._id, $any($event.target).value)"
                           placeholder="Nombre de la escuela"
                         />
-                      </td>
-                      <td style="text-align:center;">
-                        <button class="btn-icon btn-icon-red" (click)="deleteItem(item._id)" title="Eliminar">
-                          <i class="fas fa-trash-alt"></i>
-                        </button>
                       </td>
                     </tr>
                   }
@@ -172,6 +172,18 @@
     </div>
   </div>
 </main>
+
+<!-- ── MODAL: Ver imagen en grande ─────────────────── -->
+@if (modalImageUrl()) {
+  <div class="modal-overlay" (click)="closeImageModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeImageModal()" title="Cerrar">
+        <i class="fas fa-times"></i>
+      </button>
+      <img [src]="modalImageUrl()!" [alt]="'Imagen grande'" class="modal-image">
+    </div>
+  </div>
+}
 
 <!-- ── FOOTER ─────────────────────────────────────── -->
 <footer class="app-footer">
