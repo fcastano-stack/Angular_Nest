@@ -1,7 +1,4 @@
-// ─── CONTROLLER ──────────────────────────────────────────────
-// El Controller es la "puerta de entrada" de las peticiones HTTP.
-// Recibe la petición, la delega al Service y devuelve la respuesta.
-// ─────────────────────────────────────────────────────────────
+// Rutas HTTP del recurso Escuela
 import {
   Controller,
   Get,
@@ -20,44 +17,38 @@ import { memoryStorage } from 'multer';
 import { EscuelaService } from './escuela.service';
 import { CreateEscuelaDto, UpdateEscuelaDto } from './escuela.dto';
 
-// @Controller('escuelas') define la ruta base: /escuelas
 @Controller('escuelas')
 export class EscuelaController {
-  // NestJS inyecta el servicio automáticamente
   constructor(private readonly escuelaService: EscuelaService) {}
 
-  // GET /escuelas — lista todas las escuelas
   @Get()
   findAll() {
     return this.escuelaService.findAll();
   }
 
-  // GET /escuelas/:id — trae una escuela por ID
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.escuelaService.findOne(id);
   }
 
-  // POST /escuelas — crea una nueva escuela con los datos del body
   @Post()
   create(@Body() dto: CreateEscuelaDto) {
     return this.escuelaService.create(dto);
   }
 
-  // PATCH /escuelas/:id — modifica parcialmente una escuela
   @Patch(':id')
   update(@Param('id') id: string, @Body() dto: UpdateEscuelaDto) {
     return this.escuelaService.update(id, dto);
   }
 
-  // DELETE /escuelas/:id — elimina una escuela (responde 204 sin contenido)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id') id: string) {
     return this.escuelaService.remove(id);
   }
 
-  // POST /escuelas/:id/imagen — sube una imagen a Cloudinary y guarda la URL
+  // Recibe la imagen como multipart/form-data (campo "image"),
+  // la guarda en memoria y la pasa al service para subirla a Cloudinary.
   @Post(':id/imagen')
   @UseInterceptors(FileInterceptor('image', { storage: memoryStorage() }))
   uploadImage(

@@ -1,3 +1,5 @@
+// Configura el SDK de Cloudinary con las credenciales del .env
+// y lo registra en NestJS para que otros archivos puedan inyectarlo.
 import { v2 as cloudinary } from 'cloudinary';
 
 export const CLOUDINARY = 'CLOUDINARY';
@@ -7,7 +9,7 @@ export const CloudinaryProvider = {
   useFactory: () => {
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
+      api_key:    process.env.CLOUDINARY_API_KEY,
       api_secret: process.env.CLOUDINARY_API_SECRET,
     });
     return cloudinary;

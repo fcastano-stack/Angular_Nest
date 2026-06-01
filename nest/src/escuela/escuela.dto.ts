@@ -1,16 +1,11 @@
-// ─── DTOs (Data Transfer Objects) ──────────────────────────
-// Un DTO define qué datos esperamos recibir en cada petición.
-// Es como un "contrato" entre el frontend y el backend.
-// ────────────────────────────────────────────────────────────
+// DTOs: definen qué datos acepta cada endpoint
 
-// DTO para crear una escuela (POST)
-// El frontend debe enviar: { "name": "Escuela X" }
+// POST /escuelas
 export class CreateEscuelaDto {
   name: string;
 }
 
-// DTO para actualizar una escuela (PATCH)
-// El signo ? significa que el campo es opcional
+// PATCH /escuelas/:id
 export class UpdateEscuelaDto {
   name?: string;
   imageUrl?: string | null;
