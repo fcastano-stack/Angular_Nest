@@ -14,7 +14,7 @@ export interface Escuela {
 export class EscuelaService {
   private readonly base = `${environment.apiUrl}/escuelas`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAll(): Observable<Escuela[]> {
     return this.http.get<Escuela[]>(this.base);

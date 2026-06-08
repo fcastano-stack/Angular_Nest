@@ -12,7 +12,7 @@ export class EscuelaService {
     @InjectModel(Escuela.name)
     private readonly escuelaModel: Model<EscuelaDocument>,
     private readonly cloudinaryService: CloudinaryService,
-  ) {}
+  ) { }
 
   async findAll(): Promise<EscuelaDocument[]> {
     return this.escuelaModel.find().sort({ createdAt: 1 }).exec();
